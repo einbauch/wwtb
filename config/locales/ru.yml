@@ -23,6 +23,11 @@ ru:
       good_answer: "Правильный ответ, молодцом :)"
       bad_answer: "Правильный ответ: %{answer}. Игра закончена, ваш приз %{prize}"
 
+  activerecord:
+    attributes:
+      user:
+        name: "Имя"
+
 # статусы игры
   game_statuses:
     fail: 'проигрыш'

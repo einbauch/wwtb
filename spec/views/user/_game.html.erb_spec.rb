@@ -43,6 +43,6 @@ RSpec.describe 'users/_game', type: :view do
 
   # Проверяем, что фрагмент выводит текущий выигрыш игрока
   it 'renders game prize' do
-    expect(rendered).to match '1 000 ₽'
+    expect(rendered).to match '1 000 '
   end
 end
