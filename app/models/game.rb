@@ -94,7 +94,7 @@ class Game < ActiveRecord::Base
   #
   # возвращает false — если 1) ответ неверный 2) время вышло 3) игра уже закончена ранее
   #   в любом случае прописывается :finished_at, :prize (если несгораемый уровень), :updated_at
-  # После вызова этого метода обновлится .status игры
+  # После вызова этого метода обновится .status игры
   #
   # letter = 'a','b','c' или 'd'
   def answer_current_question!(letter)
@@ -116,6 +116,19 @@ class Game < ActiveRecord::Base
     end
   end
 
+  # todo: дорогой ученик!
+  # Код метода ниже можно сократиь в 3 раза с помощью возможностей Ruby и Rails,
+  # подумайте как и реализуйте. Помните о безопасности и входных данных!
+  #
+  # Вариант решения вы найдете в комментарии в конце файла, отвечающего за настройки
+  # хранения сессий вашего приложения. Вот такой вот вам ребус :)
+
+  # Создает варианты подсказок для текущего игрового вопроса.
+  # Возвращает true, если подсказка применилась успешно,
+  # false если подсказка уже заюзана.
+  #
+  # help_type = :fifty_fifty | :audience_help | :friend_call
+
   def use_help(help_type)
     case help_type
       when :audience_help
@@ -126,8 +139,14 @@ class Game < ActiveRecord::Base
         end
       when :fifty_fifty
         unless fifty_fifty_used
-          toggle!(:fifty_fifty)
+          toggle!(:fifty_fifty_used)
           current_game_question.add_fifty_fifty
+          return true
+        end
+      when :friend_call
+        unless friend_call_used
+          toggle!(:friend_call_used)
+          current_game_question.add_friend_call
           return true
         end
     end

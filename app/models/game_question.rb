@@ -61,19 +61,19 @@ class GameQuestion < ActiveRecord::Base
   end
 
   def add_audience_help
-    self.help_hash[:audience_help] = {
-      'a' => rand(100),
-      'b' => rand(100),
-      'c' => rand(100),
-      'd' => rand(100)
-    }
+    # массив ключей
+    keys_to_use = keys_to_use_in_help
+    self.help_hash[:audience_help] = GameHelpGenerator.audience_distribution(keys_to_use, correct_answer_key)
     save
   end
 
+  # Добавляем в help_hash по ключю fifty_fifty - массив из двух вариантов: правильный и случайный
+  # и сохраняем объект
   def add_fifty_fifty
-    wrong_answers = %w( a b c d)
-    wrong_answers.delete(self.correct_answer_key)
-    self.help_hash[:fifty_fifty] = [ wrong_answers.sample, self.correct_answer_key ]
+    self.help_hash[:fifty_fifty] = [
+      correct_answer_key,
+      (%w(a b c d) - [correct_answer_key]).sample
+    ]
     save
   end
 

@@ -43,9 +43,9 @@ class GamesController < ApplicationController
 
     unless @answer_is_correct
       flash[:alert] = I18n.t(
-        'controllers.games.bad_answer',
-        answer: @game_question.correct_answer,
-        prize: view_context.number_to_currency(@game.prize)
+      'controllers.games.bad_answer',
+      answer: @game_question.correct_answer,
+      prize: view_context.number_to_currency(@game.prize)
       )
     end
 
