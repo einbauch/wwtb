@@ -116,6 +116,25 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def use_help(help_type)
+    case help_type
+      when :audience_help
+        unless audience_help_used
+          toggle!(:audience_help_used)
+          current_game_question.add_audience_help
+          return true
+        end
+      when :fifty_fifty
+        unless fifty_fifty_used
+          toggle!(:fifty_fifty)
+          current_game_question.add_fifty_fifty
+          return true
+        end
+    end
+
+    false
+  end
+
   # Записываем юзеру игровую сумму на счет и завершаем игру,
   def take_money!
     return if time_out! || finished? # из законченной или неначатой игры нечего брать
