@@ -90,9 +90,10 @@ RSpec.describe GamesController, type: :controller do
 
     it 'answer wrong' do
       q = game_w_questions.current_game_question
-      put :answer, id: game_w_questions.id, letter: 'a'
+      wrong_answers = %w(a b c d)
+      wrong_answers.delete(q.correct_answer_key)
+      put :answer, id: game_w_questions.id, letter: wrong_answers.sample
       game = assigns(:game)
-      expect(q.correct_answer_key).not_to eq('a')
       expect(game.finished?).to be_truthy
       expect(game.current_level).to eq(0)
       expect(response).to redirect_to(user_path(user))
@@ -142,6 +143,20 @@ RSpec.describe GamesController, type: :controller do
       expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
       expect(response).to redirect_to(game_path(game))
 
+    end
+
+    it 'uses 50/50 help' do
+      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
+      expect(game_w_questions.fifty_fifty_used).to be_falsey
+
+      put :help, id: game_w_questions.id, help_type: :fifty_fifty
+      game = assigns(:game)
+
+      expect(game.finished?).to be_falsey
+      expect(game.fifty_fifty_used).to be_truthy
+      expect(game.current_game_question.help_hash[:fifty_fifty]).to be
+      expect(game.current_game_question.help_hash[:fifty_fifty].size).to eq 2
+      expect(response).to redirect_to(game_path(game))
     end
 
   end

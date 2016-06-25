@@ -130,29 +130,17 @@ class Game < ActiveRecord::Base
   # help_type = :fifty_fifty | :audience_help | :friend_call
 
   def use_help(help_type)
-    case help_type
-      when :audience_help
-        unless audience_help_used
-          toggle!(:audience_help_used)
-          current_game_question.add_audience_help
-          return true
-        end
-      when :fifty_fifty
-        unless fifty_fifty_used
-          toggle!(:fifty_fifty_used)
-          current_game_question.add_fifty_fifty
-          return true
-        end
-      when :friend_call
-        unless friend_call_used
-          toggle!(:friend_call_used)
-          current_game_question.add_friend_call
-          return true
-        end
-    end
+    help_types = %i(fifty_fifty audience_help friend_call)
+    help_type = help_type
+    raise ArgumentError.new('wrong help_type') unless help_types.include?(help_type)
 
-    false
-  end
+    unless self["#{help_type}_used"]
+      self["#{help_type}_used"] = true
+      current_game_question.apply_help!(help_type)
+      save
+    end
+     # false не нужен — unless вернёт nil, если не будет исполнен
+   end
 
   # Записываем юзеру игровую сумму на счет и завершаем игру,
   def take_money!

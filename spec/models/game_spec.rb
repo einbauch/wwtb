@@ -148,8 +148,8 @@ RSpec.describe Game, type: :model do
     end
 
     it 'answer correct and last' do
-      q = game_w_questions.current_game_question
       game_w_questions.current_level = 14
+      q = game_w_questions.current_game_question
       expect(game_w_questions.answer_current_question!(q.correct_answer_key)).to be_truthy
       expect(game_w_questions.current_level).to eq(15)
       expect(game_w_questions.finished_at).not_to eq(nil)

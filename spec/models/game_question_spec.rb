@@ -4,8 +4,14 @@ RSpec.describe GameQuestion, type: :model do
 
   let(:game_question) { FactoryGirl.create(:game_question, a:2, b:1, c:4, d:3) }
 
+
   context 'game status' do
     it 'correct .variants' do
+
+      game_question.a = 2
+      game_question.b = 1
+      game_question.c = 4
+      game_question.d = 3
 
       expect(game_question.variants).to eq({
                                             'a' => game_question.question.answer2,
@@ -16,6 +22,12 @@ RSpec.describe GameQuestion, type: :model do
     end
 
     it 'correct .answer_correct?' do
+
+      game_question.a = 2
+      game_question.b = 1
+      game_question.c = 4
+      game_question.d = 3
+
       expect(game_question.answer_correct?('b')).to be_truthy
     end
 
@@ -26,6 +38,12 @@ RSpec.describe GameQuestion, type: :model do
     end
 
     it 'correct .correct_answer_key' do
+
+      game_question.a = 2
+      game_question.b = 1
+      game_question.c = 4
+      game_question.d = 3
+
       expect(game_question.correct_answer_key).to eq('b')
     end
 
@@ -70,6 +88,12 @@ RSpec.describe GameQuestion, type: :model do
     end
 
     it 'correct fifty_fifty' do
+
+      game_question.a = 2
+      game_question.b = 1
+      game_question.c = 4
+      game_question.d = 3
+
       expect(game_question.help_hash).not_to include(:fifty_fifty)
 
       game_question.add_fifty_fifty

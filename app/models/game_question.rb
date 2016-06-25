@@ -85,6 +85,17 @@ class GameQuestion < ActiveRecord::Base
     save
   end
 
+  def apply_help!(help_type)
+    case help_type
+      when :fifty_fifty
+        add_fifty_fifty
+      when :audience_help
+        add_audience_help
+      when :friend_call
+        add_friend_call
+    end
+  end
+
   def keys_to_use_in_help
     keys_to_use = variants.keys
     # Учитываем наличие подсказки 50/50

@@ -1,12 +1,16 @@
 FactoryGirl.define do
   factory :game_question do
-    a 4
-    b 3
-    c 2
-    d 1
 
     association :question
     association :game
+
+    after(:build) { |q|
+      ans = [1,2,3,4]
+      q.a = ans.shuffle!.pop
+      q.b = ans.shuffle!.pop
+      q.c = ans.shuffle!.pop
+      q.d = ans.shuffle!.pop
+    }
 
   end
 end
